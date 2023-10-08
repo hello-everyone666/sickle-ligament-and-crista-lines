@@ -32,6 +32,7 @@ def shuffle_data(data, labels):
     #随机打乱idx
     np.random.shuffle(idx)
     return data[idx, ...], labels[idx], idx
+
 #打乱每个点云中的点的顺序-用于更改FPS行为，对整个batch使用相同的打乱索引idx
 def shuffle_points(batch_data):
     """ Shuffle orders of points in each point cloud -- changes FPS behavior.
@@ -44,6 +45,7 @@ def shuffle_points(batch_data):
     idx = np.arange(batch_data.shape[1])
     np.random.shuffle(idx)
     return batch_data[:,idx,:]
+
 #随机旋转点云进行数据集扩增；每个形状沿向上方向旋转
 def rotate_point_cloud(batch_data):
     """ Randomly rotate the point clouds to augument the dataset
@@ -161,6 +163,7 @@ def rotate_point_cloud_by_angle(batch_data, rotation_angle):
         shape_pc = batch_data[k,:,0:3]
         rotated_data[k,:,0:3] = np.dot(shape_pc.reshape((-1, 3)), rotation_matrix)
     return rotated_data
+
 #将具有法向量信息的点云沿向上方向旋转一定角度
 def rotate_point_cloud_by_angle_with_normal(batch_data, rotation_angle):
     """ Rotate the point cloud along up direction with certain angle.
@@ -182,7 +185,6 @@ def rotate_point_cloud_by_angle_with_normal(batch_data, rotation_angle):
         rotated_data[k,:,0:3] = np.dot(shape_pc.reshape((-1, 3)), rotation_matrix)
         rotated_data[k,:,3:6] = np.dot(shape_normal.reshape((-1,3)), rotation_matrix)
     return rotated_data
-
 
 #通过小的旋转随机扰动点云
 def rotate_perturbation_point_cloud(batch_data, angle_sigma=0.06, angle_clip=0.18):
@@ -223,6 +225,7 @@ def jitter_point_cloud(batch_data, sigma=0.01, clip=0.05):
     jittered_data = np.clip(sigma * np.random.randn(B, N, C), -1*clip, clip)
     jittered_data += batch_data
     return jittered_data
+
 #随机移点云，移位是针对每个点云
 def shift_point_cloud(batch_data, shift_range=0.1):
     """ Randomly shift point cloud. Shift is per point cloud.
@@ -250,6 +253,7 @@ def random_scale_point_cloud(batch_data, scale_low=0.8, scale_high=1.25):
     for batch_index in range(B):
         batch_data[batch_index,:,:] *= scales[batch_index]
     return batch_data
+
 #随机丢弃点云中的点。
 def random_point_dropout(batch_pc, max_dropout_ratio=0.875):
     ''' batch_pc: BxNx3 '''
