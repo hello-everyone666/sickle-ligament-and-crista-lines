@@ -3,8 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from time import time
 import numpy as np
-
-import sys  # 导入sys模块
+import sys
 sys.setrecursionlimit(3000)  # 将默认的递归深度修改为3000
 
 
@@ -143,7 +142,7 @@ def query_ball_point(radius, nsample, xyz, new_xyz):
     mask = group_idx == N
     #将这些点的值替换为第一个点的值
     group_idx[mask] = group_first[mask]
-    return group_idx   #S个group
+    return group_idx
 
 #Sampling+Grouping主要用于将整个点云分散成局部的group,
 #对每一个group都可以用PointNet单独地提取局部的全局特征
@@ -238,7 +237,6 @@ class PointNetSetAbstraction(nn.Module):
             self.mlp_bns.append(nn.BatchNorm2d(out_channel))
             last_channel = out_channel
         self.group_all = group_all
-        #self.transfortmer=.......
     def forward(self, xyz, points):
         """
         Input:
@@ -258,9 +256,7 @@ class PointNetSetAbstraction(nn.Module):
             new_xyz, new_points = sample_and_group_all(xyz, points)
         else:
             new_xyz, new_points = sample_and_group(self.npoint, self.radius, self.nsample, xyz, points)
-        # new_xyz: sampled points position data, [B, npoint, C]
-        # new_points: sampled points data, [B, npoint, nsample, C+D]
-        new_points = new_points.permute(0, 3, 2, 1) # [B, C+D, nsample,npoint]
+        new_points = new_points.permute(0, 3, 2, 1)
         #以下是pointnet操作
         #对局部group中的每一个点做MLP操作
         #利用1x1的2d的卷积相当于把每个group当成一个通道，共npoint个通道
@@ -271,46 +267,11 @@ class PointNetSetAbstraction(nn.Module):
             #最后进行局部的最大池化，得到局部的全局特征
 
         new_points = torch.max(new_points, 2)[0]
-        """
-        size of the input and output
-        new_points=self.transfortmer(new_points)
-        """
         new_xyz = new_xyz.permute(0, 2, 1)
 
         return new_xyz, new_points
 
 
-# class Backbone(nn.Module):
-#     def __init__(self, cfg):
-#         super().__init__()
-#
-#         npoints, nblocks, nneighbor, n_c, d_points = cfg.num_point, cfg.model.nblocks, cfg.model.nneighbor, cfg.num_class, cfg.input_dim
-#         self.fc1 = nn.Sequential(
-#             nn.Linear(d_points, 32),
-#             nn.ReLU(),
-#             nn.Linear(32, 32)
-#         )
-#         self.transformer1 = transformer.TransformerBlock(32, cfg.model.transformer_dim, nneighbor)
-#         self.transition_downs = nn.ModuleList()
-#         self.transformers = nn.ModuleList()
-#         for i in range(nblocks):
-#             channel = 32 * 2 ** (i + 1)
-#
-#             self.transformers.append(transformer.TransformerBlock(channel, cfg.model.transformer_dim, nneighbor))
-#         self.nblocks = nblocks
-#
-#
-#
-#     def forward(self, x):
-#         xyz = x[..., :3]
-#         points = self.transformer1(xyz, self.fc1(x))[0]
-#
-#         xyz_and_feats = [(xyz, points)]
-#         for i in range(self.nblocks):
-#             xyz, points = self.transition_downs[i](xyz, points)
-#             points = self.transformers[i](xyz, points)[0]
-#             xyz_and_feats.append((xyz, points))
-#         return xyz_and_feats
 
 #PointNetSetAbstractionMSG类实现MSG方法的Set Abstraction
 #这里radius_list输入的是一个list,例如[0.1,0.2,0.4]
@@ -336,8 +297,6 @@ class PointNetSetAbstractionMsg(nn.Module):
             self.conv_blocks.append(convs)
             self.bn_blocks.append(bns)
 
-        #self.transformer
-
 
     def forward(self, xyz, points):
         """
@@ -356,7 +315,6 @@ class PointNetSetAbstractionMsg(nn.Module):
         S = self.npoint
         #最远点采样
         new_xyz = index_points(xyz, farthest_point_sample(xyz, S))
-        # print("new_xyz : shape , " , new_xyz.shape)
         #将不同半径下的点云特征保存在new_points_list
         new_points_list = []
         for i, radius in enumerate(self.radius_list):

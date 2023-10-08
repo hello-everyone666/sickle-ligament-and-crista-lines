@@ -1,4 +1,3 @@
-
 import argparse
 import os
 import numpy
@@ -127,17 +126,17 @@ def main(args):
                 aaa = numpy.argwhere(cur_pred_val[i] == 0)
                 print(str(i))
                 for j in aaa:
-                    res1 = open(r'/home/caiwb/Desktop/pointnet7\print\02691156_0_' + str(i) + '.txt', 'a')
+                    res1 = open(r'/home/username/Desktop/liver' + str(i) + '.txt', 'a')
                     res1.write(str(points1[i, j][0, :3]).strip('[]') + '\n')
                     res1.close()
                 bbb = numpy.argwhere(cur_pred_val[i] == 1)
                 for j in bbb:
-                    res2 = open(r'/home/caiwb/Desktop/pointnet7\print\02691156_1_' + str(i) + '.txt', 'a')
+                    res2 = open(r'/home/username/Desktop/liver' + str(i) + '.txt', 'a')
                     res2.write(str(points1[i, j][0, :3]).strip('[]') + '\n')
                     res2.close()
                 ccc = numpy.argwhere(cur_pred_val[i] == 2)
                 for j in ccc:
-                    res3 = open(r'/home/caiwb/Desktop/pointnet7\print\02691156_2_' + str(i) + '.txt', 'a')
+                    res3 = open(r'/home/username/Desktop/liver' + str(i) + '.txt', 'a')
                     res3.write(str(points1[i, j][0, :3]).strip('[]') + '\n')
                     res3.close()
 

@@ -4,8 +4,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 
-
-
 class TransformerBlock(nn.Module):
     def __init__(self, d_points, d_model, k ) -> None:
         super().__init__()

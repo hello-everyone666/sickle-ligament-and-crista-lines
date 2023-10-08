@@ -1,4 +1,3 @@
-
 import argparse
 import os
 import torch
@@ -187,7 +186,6 @@ def main(args):
             correct = pred_choice.eq(target.data).cpu().sum()
             mean_correct.append(correct.item() / (args.batch_size * args.npoint))
             loss = criterion(seg_pred, target, trans_feat)#求loss
-            print(loss)
             loss.backward()#反向传播
             optimizer.step()#参数更新
 
