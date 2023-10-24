@@ -56,7 +56,6 @@ def main(args):
 
     '''HYPER PARAMETER'''
     experiment_dir = 'log/part_seg/' + args.log_dir
-    print(torch.cuda.current_device())
 
     '''LOG'''
     args = parse_args()
@@ -124,7 +123,6 @@ def main(args):
                 logits = cur_pred_val_logits[i, :, :]
                 cur_pred_val[i, :] = np.argmax(logits[:, seg_classes[cat]], 1) + seg_classes[cat][0]
                 aaa = numpy.argwhere(cur_pred_val[i] == 0)
-                print(str(i))
                 for j in aaa:
                     res1 = open(r'/home/username/Desktop/liver' + str(i) + '.txt', 'a')
                     res1.write(str(points1[i, j][0, :3]).strip('[]') + '\n')
