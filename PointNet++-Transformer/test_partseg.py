@@ -80,7 +80,7 @@ def main(args):
 
     '''MODEL LOADING'''
     model_name = os.listdir(experiment_dir + '/logs')[0].split('.')[0]
-    print(str(experiment_dir) + '/checkpoints/best_model.pth' )
+    print(str(experiment_dir) + '/checkpoints/best_model.pth')
     MODEL = importlib.import_module(model_name)
 
     classifier = MODEL.get_model(num_part, normal_channel=args.normal).cuda()
@@ -168,7 +168,7 @@ def main(args):
             for iou in shape_ious[cat]:
                 all_shape_ious.append(iou)
             shape_ious[cat] = np.mean(shape_ious[cat])
-        mean_shape_ious = np.mean(list(shape_ious.values()))#mean shape loU
+        mean_shape_ious = np.mean(list(shape_ious.values()))#mean shape IoU
         test_metrics['accuracy'] = total_correct / float(total_seen)
         test_metrics['class_avg_accuracy'] = np.mean(
             np.array(total_correct_class) / np.array(total_seen_class, dtype=np.float))
