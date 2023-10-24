@@ -151,7 +151,7 @@ def main(args):
                 segp = cur_pred_val[i, :]
                 segl = target[i, :]
                 cat = seg_label_to_cat[segl[0]]#类别字符串:’liver'
-                #计算part loU
+                #计算part IoU
                 part_ious = [0.0 for _ in range(len(seg_classes[cat]))]
                 for l in seg_classes[cat]:
                     if (np.sum(segl == l) == 0) and (
@@ -160,7 +160,7 @@ def main(args):
                     else:
                         part_ious[l - seg_classes[cat][0]] = np.sum((segl == l) & (segp == l)) / float(
                             np.sum((segl == l) | (segp == l)))#计算交并比
-                #计算类别的shape loU
+                #计算类别的shape IoU
                 shape_ious[cat].append(np.mean(part_ious))#dict:1个类别
 
         all_shape_ious = []
@@ -177,10 +177,10 @@ def main(args):
         test_metrics['class_avg_iou'] = mean_shape_ious
         test_metrics['inctance_avg_iou'] = np.mean(all_shape_ious)
 
-    log_string('Accuracy is: %.5f' % test_metrics['accuracy'])
+    log_string('Overall Accuracy is: %.5f' % test_metrics['accuracy'])
     log_string('Class avg accuracy is: %.5f' % test_metrics['class_avg_accuracy'])
-    log_string('Class avg mIOU is: %.5f' % test_metrics['class_avg_iou'])
-    log_string('Inctance avg mIOU is: %.5f' % test_metrics['inctance_avg_iou'])
+    log_string('Class avg mIoU is: %.5f' % test_metrics['class_avg_iou'])
+    log_string('Inctance avg mIoU is: %.5f' % test_metrics['inctance_avg_iou'])
 
 if __name__ == '__main__':
     args = parse_args()

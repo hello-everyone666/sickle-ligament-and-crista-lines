@@ -258,7 +258,7 @@ def main(args):
             test_metrics['class_avg_iou'] = mean_shape_ious
             test_metrics['inctance_avg_iou'] = np.mean(all_shape_ious)
 
-        log_string('Epoch %d test Accuracy: %f  Class avg mIOU: %f   Inctance avg mIOU: %f' % (
+        log_string('Epoch %d test Accuracy: %f  Class avg mIOU: %f   Inctance avg mIoU: %f' % (
             epoch + 1, test_metrics['accuracy'], test_metrics['class_avg_iou'], test_metrics['inctance_avg_iou']))
         if (test_metrics['inctance_avg_iou'] >= best_inctance_avg_iou):
             logger.info('Save model...')
@@ -282,9 +282,9 @@ def main(args):
             best_class_avg_iou = test_metrics['class_avg_iou']
         if test_metrics['inctance_avg_iou'] > best_inctance_avg_iou:
             best_inctance_avg_iou = test_metrics['inctance_avg_iou']
-        log_string('Best accuracy is: %.5f' % best_acc)
-        log_string('Best class avg mIOU is: %.5f' % best_class_avg_iou)
-        log_string('Best inctance avg mIOU is: %.5f' % best_inctance_avg_iou)
+        log_string('Best Overall accuracy is: %.5f' % best_acc)
+        log_string('Best class avg mIoU is: %.5f' % best_class_avg_iou)
+        log_string('Best inctance avg mIoU is: %.5f' % best_inctance_avg_iou)
         global_epoch += 1
 
 
