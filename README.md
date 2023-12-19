@@ -1,2 +1,2 @@
-# falciform ligament and ridge of liver
-Extraction of sickle ligament and crista in liver point cloud based on PointNet++ and Transformer
+# sickle ligament and crista lines
+Liver falciform ligament and ridgeline anatomical landmarks extraction in preoperative point cloud based on PointNet++ and Transformer
